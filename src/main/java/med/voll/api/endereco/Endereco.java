@@ -11,9 +11,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class Endereco {
 
-	public Endereco() {
-		
-	}
 	
 	public Endereco(DadosEndereco dados) {
 		this.logradouro = dados.logradouro();
