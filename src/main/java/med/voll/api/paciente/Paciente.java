@@ -36,6 +36,20 @@ public class Paciente {
 	
 	@Embedded
 	private Endereco endereco;
+
+	public void atualizarInformacoes(DadosAtualizacaoPaciente dados) {
+		if (dados.nome() != null) {
+			this.nome = dados.nome();
+		}
+		if (dados.telefone() != null) {
+			this.telefone= dados.telefone();
+		}
+		if (dados.endereco() != null) {
+			this.endereco.atualizarInformacoes(dados.endereco());
+		}
+			
+		
+	}
 	
 	
 
