@@ -21,6 +21,7 @@ import med.voll.api.endereco.Endereco;
 public class Paciente {
 	
 	public Paciente(DadosCadastroPaciente dados) {
+		this.ativo = true;
 		this.nome = dados.nome();
 		this.email = dados.email();
 		this.telefone = dados.telefone();
@@ -36,6 +37,8 @@ public class Paciente {
 	
 	@Embedded
 	private Endereco endereco;
+	
+	private boolean ativo;
 
 	public void atualizarInformacoes(DadosAtualizacaoPaciente dados) {
 		if (dados.nome() != null) {
@@ -48,6 +51,11 @@ public class Paciente {
 			this.endereco.atualizarInformacoes(dados.endereco());
 		}
 			
+		
+	}
+
+	public void excluir() {
+		this.ativo = false;
 		
 	}
 	
