@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
+import org.springframework.web.util.UriBuilder;
+import org.springframework.web.util.UriComponentsBuilder;
 
 @RestController
 @RequestMapping("/pacientes")
@@ -27,8 +29,15 @@ public class PacienteController {
 	
 	@PostMapping
 	@Transactional
-	public void cadastar (@RequestBody @Valid DadosCadastroPaciente dados) {
-		repository.save(new Paciente(dados));
+	public ResponseEntity cadastar (@RequestBody @Valid DadosCadastroPaciente dados, UriComponentsBuilder uriBuilder) {
+
+		var paciente = new Paciente(dados);
+
+		repository.save(paciente);
+
+		var uri = uriBuilder.path("/pacientes/{id}").buildAndExpand(paciente.getId()).toUri();
+
+		return ResponseEntity.created(uri).body(new DadosDetalhamentoPaciente(paciente));
 	}
 	
 	@GetMapping
