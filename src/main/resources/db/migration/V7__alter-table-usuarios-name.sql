@@ -1,0 +1,1 @@
+RENAME TABLE usuario TO usuarios;
