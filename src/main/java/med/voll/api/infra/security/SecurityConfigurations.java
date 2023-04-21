@@ -19,7 +19,9 @@ public class SecurityConfigurations {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
 
         return http.csrf().disable()
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and().build();
+                .sessionManagement().
+                sessionCreationPolicy(SessionCreationPolicy.STATELESS).and().build()
+                ;
 
     }
     @Bean
