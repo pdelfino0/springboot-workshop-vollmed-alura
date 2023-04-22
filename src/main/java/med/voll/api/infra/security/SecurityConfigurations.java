@@ -32,7 +32,8 @@ public class SecurityConfigurations {
                 .anyRequest().authenticated()
                 .and().addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
-    }    @Bean
+    }
+    @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception{
         return configuration.getAuthenticationManager();
 

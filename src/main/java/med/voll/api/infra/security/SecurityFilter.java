@@ -34,10 +34,6 @@ public class SecurityFilter extends OncePerRequestFilter {
             SecurityContextHolder.getContext().setAuthentication(authentication);
         }
 
-        System.out.println(tokenJWT);
-
-
-
         filterChain.doFilter(request, response);
     }
 
