@@ -1,7 +1,10 @@
 package med.voll.api.controller;
 
+import med.voll.api.domain.endereco.DadosEndereco;
+import med.voll.api.domain.endereco.Endereco;
 import med.voll.api.domain.medico.DadosCadastroMedico;
 import med.voll.api.domain.medico.DadosDetalhamentoMedico;
+import med.voll.api.domain.medico.Especialidade;
 import med.voll.api.domain.medico.MedicoRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -12,11 +15,11 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.json.JacksonTester;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
-import static org.assertj.core.api.Assertions.assertThat;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 
 @SpringBootTest
@@ -45,5 +48,42 @@ class MedicoControllerTest {
                 .getResponse();
 
         assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+    }
+
+    @Test
+    @WithMockUser
+    @DisplayName("Deveria retornar 201 quando as informações estiverem válidas")
+    void cadastrar_cenario2() throws Exception {
+
+        var dadosDetalhamento = new DadosDetalhamentoMedico(null, "nome", "medico@voll.med", "123456", "51999999999", Especialidade.CARDIOLOGIA, new Endereco(dadosEndereco()));
+
+        var response = mvc.perform(post("/medicos").contentType(MediaType.APPLICATION_JSON).content(dadosCadastroMedicoJson.write(
+                new DadosCadastroMedico("nome",
+                        "medico@voll.med",
+                        "51999999999",
+                        "123456",
+                        Especialidade.CARDIOLOGIA,
+                        dadosEndereco()
+                )).getJson())
+        ).andReturn().getResponse();
+
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.CREATED.value());
+
+        var jsonEsperado = dadosDetalhamentoMedicoJson.write(
+                dadosDetalhamento
+        ).getJson();
+        assertThat(response.getContentAsString()).isEqualTo(jsonEsperado);
+    }
+
+    private DadosEndereco dadosEndereco() {
+        return new DadosEndereco(
+                "rua xpto",
+                "bairro",
+                "00000000",
+                "Brasilia",
+                "DF",
+                null,
+                null
+        );
     }
 }
